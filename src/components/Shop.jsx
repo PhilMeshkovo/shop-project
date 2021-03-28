@@ -7,7 +7,34 @@ import {Cart} from './Cart'
 function Shop() {
     const[goods, setGoods] = useState([]);
     const[loading, setLoading] = useState(true);
-    const[order, setOreder] = useState([]);
+    const[order, setOrder] = useState([]);
+
+const addToBasket = (item) => {
+    const itemIndex = order.findIndex(orderItem => orderItem.id === item.id);
+
+    if(itemIndex < 0) {
+         const newItem = {
+        ...item,
+        quantity: 1,
+
+    }
+        setOrder([...order, newItem])
+    } else {
+        const newOrder = order.map((orderItem, index) => {
+            if(index === itemIndex) {
+                return {
+                    ...orderItem,
+                    quantity: orderItem.quantity + 1
+                }
+            } else {
+                return item;
+            }
+        } )
+        setOrder(newOrder);
+    }
+
+   
+}
 
 useEffect(function getGoods() {
     fetch(API_URL, {
@@ -22,7 +49,7 @@ useEffect(function getGoods() {
 
     return <main className='container content'>
         <Cart quantity={order.length}></Cart>
-        {loading ? <Preloader /> : <GoodsList goods={goods}/>}
+        {loading ? <Preloader /> : <GoodsList addToBasket={addToBasket} goods={goods}/>}
     </main>
 }
 
