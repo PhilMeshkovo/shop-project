@@ -20,7 +20,6 @@ const addToBasket = (item) => {
          const newItem = {
         ...item,
         quantity: 1,
-
     }
         setOrder([...order, newItem])
     } else {
@@ -36,8 +35,41 @@ const addToBasket = (item) => {
         } )
         setOrder(newOrder);
     }
+}
 
-   
+const removeFromBasket = (itemId) => {
+    const newOrder = order.filter((el) => el.id !== itemId);
+    setOrder(newOrder);
+}
+
+const incQuantity = (itemId) => {
+    const newOrder = order.map((el) => {
+        if(el.id === itemId) {
+            const newQuantity = el.quantity + 1
+            return {
+                ...el,
+                quantity: newQuantity
+            }
+        } else {
+            return el;
+        }
+    })
+    setOrder(newOrder);
+}
+const decQuantity = (itemId) => {
+
+    const newOrder = order.map((el) => {
+        if(el.id === itemId) {
+            const newQuantity = el.quantity - 1
+            return {
+                ...el,
+                quantity: newQuantity >= 0 ? newQuantity : 0
+            }
+        } else {
+            return el;
+        }
+    })
+    setOrder(newOrder);
 }
 
 const handleBasketShow = () => {
@@ -58,7 +90,13 @@ useEffect(function getGoods() {
     return <main className='container content'>
         <Cart quantity={order.length} handleBasketShow={handleBasketShow}></Cart>
         {loading ? <Preloader /> : <GoodsList addToBasket={addToBasket} goods={goods}/>}
-        {isBasketShow && <BasketList order={order} handleBasketShow={handleBasketShow}/>}
+        {isBasketShow && <BasketList 
+        order={order} 
+        removeFromBasket={removeFromBasket} 
+        incQuantity={incQuantity}
+        handleBasketShow={handleBasketShow}
+        decQuantity={decQuantity}
+        />}
     </main>
 }
 
