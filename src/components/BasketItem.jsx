@@ -9,7 +9,7 @@ function BasketItem(props) {
         decQuantity = Function.prototype
     } = props
 
-    return  <a className="collection-item">
+    return  <a href='#!' className="collection-item">
         {name} x<i className='material-icons basket-quantity' onClick={() => decQuantity(id)}>remove</i>{' '}
         {quantity} <i className='material-icons basket-quantity' onClick={() => incQuantity(id)}>add</i> = {price * quantity} руб.
         
